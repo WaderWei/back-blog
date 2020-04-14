@@ -1,0 +1,43 @@
+server:
+  port: 9001
+  servlet:
+    context-path: /api
+
+spring:
+  profiles:
+      active: dev
+      logging:
+        level:
+          org.springframework.web: debug
+  datasource:
+    dynamic:
+      primary: mysql
+      datasource:
+        mysql:
+          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+          # driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:p6spy:mysql://localhost:3306/myblog?serverTimezone=CTT&useSSL=false&useUnicode=true&characterEncoding=utf8
+          username: root
+          password: 123456
+  aop:
+    proxy-target-class: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 30MB
+      max-request-size: 20MB
+    http:
+      encoding:
+        charset: UTF-8
+        force: true
+        enabled: true
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: wade.wei.entity
+
