@@ -38,6 +38,7 @@ public class ShiroConfig {
         //设置自定义filter
         Map<String, Filter> filterMap = new LinkedHashMap<>();
         filterMap.put("roleOrFilter", new CustomRoleOrAuthorizationFilter());
+        filterMap.put("CORSAuthenticationFilter", new CORSAuthenticationFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
 
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
@@ -63,7 +64,7 @@ public class ShiroConfig {
     }
 
     @Bean
-    public SecurityManager securityManager(){
+    public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 
         //如果不是前后端分离，则不必设置下面的sessionManager
@@ -80,10 +81,11 @@ public class ShiroConfig {
 
     /**
      * 自定义realm
+     *
      * @return
      */
     @Bean
-    public CustomRealm customRealm(){
+    public CustomRealm customRealm() {
         CustomRealm customRealm = new CustomRealm();
 
         customRealm.setCredentialsMatcher(hashedCredentialsMatcher());
@@ -92,10 +94,11 @@ public class ShiroConfig {
 
     /**
      * 密码加解密规则
+     *
      * @return
      */
     @Bean
-    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+    public HashedCredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
 
         //设置散列算法：这里使用的MD5算法
@@ -109,7 +112,7 @@ public class ShiroConfig {
 
     //自定义sessionManager
     @Bean
-    public SessionManager sessionManager(){
+    public SessionManager sessionManager() {
 
         CustomSessionManager customSessionManager = new CustomSessionManager();
 
@@ -124,9 +127,8 @@ public class ShiroConfig {
 
     /**
      * 配置redisManager
-     *
      */
-    public RedisManager getRedisManager(){
+    public RedisManager getRedisManager() {
         RedisManager redisManager = new RedisManager();
         redisManager.setHost("localhost");
         redisManager.setPort(6379);
@@ -136,9 +138,10 @@ public class ShiroConfig {
 
     /**
      * 配置具体cache实现类
+     *
      * @return
      */
-    public RedisCacheManager cacheManager(){
+    public RedisCacheManager cacheManager() {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(getRedisManager());
 
@@ -151,9 +154,10 @@ public class ShiroConfig {
 
     /**
      * 自定义session持久化
+     *
      * @return
      */
-    public RedisSessionDAO redisSessionDAO(){
+    public RedisSessionDAO redisSessionDAO() {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(getRedisManager());
 
@@ -166,6 +170,7 @@ public class ShiroConfig {
 
     /**
      * 管理shiro一些bean的生命周期 即bean初始化 与销毁
+     *
      * @return
      */
     @Bean
@@ -175,8 +180,8 @@ public class ShiroConfig {
 
 
     /**
-     *  api controller 层面
-     *  加入注解的使用，不加入这个AOP注解不生效(shiro的注解 例如 @RequiresGuest)
+     * api controller 层面
+     * 加入注解的使用，不加入这个AOP注解不生效(shiro的注解 例如 @RequiresGuest)
      *
      * @return
      */
@@ -189,14 +194,15 @@ public class ShiroConfig {
 
 
     /**
-     *  用来扫描上下文寻找所有的Advistor(通知器),
-     *  将符合条件的Advisor应用到切入点的Bean中，需要在LifecycleBeanPostProcessor创建后才可以创建
+     * 用来扫描上下文寻找所有的Advistor(通知器),
+     * 将符合条件的Advisor应用到切入点的Bean中，需要在LifecycleBeanPostProcessor创建后才可以创建
+     *
      * @return
      */
     @Bean
     @DependsOn("lifecycleBeanPostProcessor")
-    public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator(){
-        DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator=new DefaultAdvisorAutoProxyCreator();
+    public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
         defaultAdvisorAutoProxyCreator.setUsePrefix(true);
         return defaultAdvisorAutoProxyCreator;
     }
