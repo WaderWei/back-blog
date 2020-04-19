@@ -3,6 +3,7 @@ package wade.wei.commresult;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import wade.wei.enums.CommonReturnEnum;
+import wade.wei.exception.BusinessException;
 
 import java.io.Serializable;
 
@@ -34,9 +35,14 @@ public class ResultBean<T> implements Serializable {
         this.data = data;
     }
 
-    public ResultBean(Throwable err) {
-        this.code = CommonReturnEnum.UNKNOWN_FAIL.getCode();
-        this.msg = CommonReturnEnum.UNKNOWN_FAIL.getMsg();
+    public ResultBean(CommonReturnEnum returnEnum) {
+        this.setCode(returnEnum.getCode());
+        this.setMsg(returnEnum.getMsg());
+    }
+
+    public ResultBean(BusinessException e) {
+        this.code = e.getCommonReturnEnum().getCode();
+        this.msg = e.getCommonReturnEnum().getMsg();
     }
 
     /**
