@@ -1,6 +1,5 @@
 package wade.wei.controller;
 
-import org.apache.shiro.SecurityUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +14,7 @@ import wade.wei.entity.User;
 public class UserController {
     @GetMapping("info")
     public ResultBean<User> getInfo() {
-        User user = (User) SecurityUtils.getSubject().getPrincipal();
-        return new ResultBean<>(user);
+        // User user = (User) SecurityUtils.getSubject().getPrincipal();
+        return null;
     }
 }

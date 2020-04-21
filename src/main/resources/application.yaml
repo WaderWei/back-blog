@@ -19,6 +19,22 @@ spring:
           url: jdbc:p6spy:mysql://localhost:3306/myblog?serverTimezone=CTT&useSSL=false&useUnicode=true&characterEncoding=utf8
           username: root
           password: 123456
+  # 发送邮件相关配置
+  mail:
+      host: smtp.qq.com
+      username: 745696658@qq.com
+      password: scezatfabhskbfed
+      default-encoding: utf-8
+      properties:
+        mail:
+          socketFactoryClass: javax.net.ssl.SSLSocketFactory
+  # rabbitmq 相关配置
+  rabbitmq:
+    host: 47.102.145.172
+    port: 5672
+    username: wadewei
+    password: wadewei
+    virtual-host: /myblog
   aop:
     proxy-target-class: true
   servlet:
