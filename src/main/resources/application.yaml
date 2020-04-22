@@ -16,14 +16,20 @@ spring:
         mysql:
           driver-class-name: com.p6spy.engine.spy.P6SpyDriver
           # driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:p6spy:mysql://localhost:3306/myblog?serverTimezone=CTT&useSSL=false&useUnicode=true&characterEncoding=utf8
+          url: jdbc:p6spy:mysql://47.102.145.172:3306/myblog?serverTimezone=CTT&useSSL=false&useUnicode=true&characterEncoding=utf8
           username: root
-          password: 123456
+          password: wadewei
+  # redis
+  redis:
+    host: 47.102.145.172
+    port: 6379
+    password: wadewei
+
   # 发送邮件相关配置
   mail:
       host: smtp.qq.com
       username: 745696658@qq.com
-      password: scezatfabhskbfed
+      password: hqygpmumqdsxbfhh
       default-encoding: utf-8
       properties:
         mail:
@@ -35,6 +41,12 @@ spring:
     username: wadewei
     password: wadewei
     virtual-host: /myblog
+    template:
+      retry:
+        enabled: true
+        max-interval: 30000ms
+        initial-interval: 10000ms
+        multiplier: 2
   aop:
     proxy-target-class: true
   servlet:

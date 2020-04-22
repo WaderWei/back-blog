@@ -11,6 +11,7 @@ import wade.wei.vo.group.RegisterGroup;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 
 /**
  * @author Administrator
@@ -19,7 +20,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class UserVO {
+public class UserVO implements Serializable {
 
     @NotBlank(message = "邮箱不能为空")
     @Pattern(regexp = "^(.+)@(.+)$",message = "请输入正确的邮箱格式")
