@@ -1,11 +1,10 @@
 package wade.wei.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.Order;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import wade.wei.commresult.ResultBean;
@@ -26,8 +25,8 @@ public class GlobalExceptionHandler {
     private final String ERROR_PRE = "GlobalExceptionHandler: ";
     private final String REQUEST_INFO = "请求相关信息：";
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResultBean parameterExceptionHandler(HttpServletRequest request, MethodArgumentNotValidException e) {
+    @ExceptionHandler(BindException.class)
+    public ResultBean parameterExceptionHandler(HttpServletRequest request, BindException e) {
         log(request,e);
         // 获取异常信息
         BindingResult exceptions = e.getBindingResult();
@@ -35,7 +34,6 @@ public class GlobalExceptionHandler {
         if (exceptions.hasErrors()) {
             List<ObjectError> errors = exceptions.getAllErrors();
             if (!errors.isEmpty()) {
-                // 这里列出了全部错误参数，按正常逻辑，只需要第一条错误即可
                 FieldError fieldError = (FieldError) errors.get(0);
                 return new ResultBean().setCode(CommonReturnEnum.PARAM_ERROR.getCode())
                         .setMsg(CommonReturnEnum.PARAM_ERROR.getMsg() + ":" + fieldError);

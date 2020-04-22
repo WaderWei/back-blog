@@ -17,7 +17,8 @@ public enum CommonReturnEnum {
     ILLEGAL_TOKEN(50001, "非法的token"),
     EXPIRED_TOKEN(50011, "Token过期了"),
     NO_PERMISSION(60001, "无权限"),
-    PARAM_ERROR(70001, "参数错误");
+    PARAM_ERROR(70001, "参数错误"),
+    EXIST_USER(80001, "此邮箱已被注册");
 
     private Integer code;
     private String msg;
