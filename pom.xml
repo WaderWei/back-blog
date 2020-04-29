@@ -67,12 +67,6 @@
             <version>${p6spy.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatisplus.version}</version>
-        </dependency>
-
         <!--jdbc-->
         <dependency>
             <groupId>mysql</groupId>

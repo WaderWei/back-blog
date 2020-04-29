@@ -15,16 +15,14 @@ spring:
       datasource:
         mysql:
           driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-          # driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:p6spy:mysql://47.102.145.172:3306/myblog?serverTimezone=CTT&useSSL=false&useUnicode=true&characterEncoding=utf8
+          url: jdbc:p6spy:mysql://127.0.0.1:3306/myblog?serverTimezone=CTT&useSSL=false&useUnicode=true&characterEncoding=utf8
           username: root
-          password: wadewei
+          password: 123456
   # redis
   redis:
     host: 47.102.145.172
     port: 6379
     password: wadewei
-
   # 发送邮件相关配置
   mail:
       host: smtp.qq.com
@@ -69,3 +67,11 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml
   type-aliases-package: wade.wei.entity
 
+blog:
+  jwt:
+    secret: ly@Login(Auth}*^31)&yun6%f3q2 # 登录校验的密钥
+    pubKeyPath: H:/bystander/id_rsa.pub # 公钥地址
+    priKeyPath: H:/bystander/id_rsa.pri # 私钥地址
+    expire: 30 # 过期时间,单位分钟
+    cookieName: BL_TOKEN
+    cookieMaxAge: 1800

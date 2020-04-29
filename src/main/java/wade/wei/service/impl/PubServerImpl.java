@@ -1,14 +1,18 @@
 package wade.wei.service.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import wade.wei.entity.User;
+import wade.wei.properties.JwtProperties;
 import wade.wei.properties.PubProperties;
 import wade.wei.service.PubServer;
 import wade.wei.utils.JsonMapperUtil;
+import wade.wei.utils.JwtUtils;
 import wade.wei.utils.NumberUtils;
 import wade.wei.vo.UserVO;
 
@@ -31,6 +35,9 @@ public class PubServerImpl implements PubServer {
     @Autowired
     private AmqpTemplate amqpTemplate;
 
+    @Autowired
+    private JwtProperties jwtProperties;
+
     /**
      * 通过rabbitmq发送邮件
      *
@@ -49,7 +56,7 @@ public class PubServerImpl implements PubServer {
                     "  <div><p style='text-indent:2em'>您的验证码是:<a href='#'>" + code + "</a>,请您在5分钟内完成验证，请勿向他人泄露您的验证码。</p></div>\n" +
                     "  <div style='text-align: right;margin-right: 20px;font-weight: bolder'>myblog</div>\n" +
                     "</div>";
-            helper.setText(template,true);
+            helper.setText(template, true);
             // 发送邮件
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {
@@ -59,13 +66,18 @@ public class PubServerImpl implements PubServer {
 
     /**
      * 在redis中存储验证码
+     * 失效时间5分钟
      *
      * @param key
      * @param code
      */
     @Override
     public void saveCode(String key, String code) {
-        this.redisTemplate.opsForValue().set(key, code,5, TimeUnit.MINUTES);
+        // 不是空，说明已经发送了邮件，则不再发送
+        if (StringUtils.isNotBlank(this.redisTemplate.opsForValue().get(key))) {
+            return;
+        }
+        this.redisTemplate.opsForValue().set(key, code, 5, TimeUnit.MINUTES);
     }
 
 
@@ -80,9 +92,22 @@ public class PubServerImpl implements PubServer {
         UserVO userVO = new UserVO();
         userVO.setEmail(receiver);
         userVO.setVerificationCode(code);
-        // 发送到rabbitmq中
-        this.amqpTemplate.convertAndSend(PubProperties.EXCHANGE_NAME, PubProperties.QUEUE_NAME, JsonMapperUtil.obj2String(userVO));
         // 存储到redis中
         this.saveCode(PubProperties.CODE_KEY_PRE + receiver, code);
+        // 发送到rabbitmq中
+        this.amqpTemplate.convertAndSend(PubProperties.EXCHANGE_NAME, PubProperties.QUEUE_NAME, JsonMapperUtil.obj2String(userVO));
+
+    }
+
+    @Override
+    public boolean validCode(String code, String receiver) {
+        String redisCode = this.redisTemplate.opsForValue().get(PubProperties.CODE_KEY_PRE + receiver);
+        return StringUtils.equals(code, redisCode);
+
+    }
+
+    @Override
+    public String generateToken(User user) {
+        return JwtUtils.generateToken(user, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
     }
 }

@@ -18,7 +18,9 @@ public enum CommonReturnEnum {
     EXPIRED_TOKEN(50011, "Token过期了"),
     NO_PERMISSION(60001, "无权限"),
     PARAM_ERROR(70001, "参数错误"),
-    EXIST_USER(80001, "此邮箱已被注册");
+    EXIST_USER(80001, "此邮箱已被注册"),
+    EMAIL_OR_PWD_ERROR(80002, "邮箱或者密码错误"),
+    CODE_ERROR(90001,"验证码错误");
 
     private Integer code;
     private String msg;

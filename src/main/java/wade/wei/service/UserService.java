@@ -17,6 +17,13 @@ public interface UserService {
     User getUserByPhone(String phone);
 
     /**
+     * 登录获取用户
+     * @param user
+     * @return
+     */
+    User getUser(User user);
+
+    /**
      * 查找所有用户
      *
      * @return
@@ -29,5 +36,12 @@ public interface UserService {
      * @return
      */
     boolean existEmail(String email);
+
+    /**
+     * 保存用户
+     * @param user
+     * @param code
+     */
+    void saveUser(User user,String code);
 
 }
