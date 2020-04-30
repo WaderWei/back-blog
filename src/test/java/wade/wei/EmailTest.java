@@ -9,6 +9,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.test.context.junit4.SpringRunner;
+import wade.wei.stategy.AuthFactory;
 import wade.wei.utils.JsonMapperUtil;
 
 import javax.mail.MessagingException;
@@ -54,12 +55,10 @@ public class EmailTest {
         javaMailSender.send(mimeMessage);
     }
 
-   /* @Test
+    @Autowired
+    private AuthFactory authFactory;
+    @Test
     public  void  test1() throws InterruptedException {
-        EmailInfo emailInfo = new EmailInfo();
-        emailInfo.setEmail("910960741@qq.com");
-        emailInfo.setCode("123123");
-        this.amqpTemplate.convertAndSend("email.exchange","verity.code", JsonMapperUtil.obj2String(emailInfo));
-        Thread.sleep(10000);
-    }*/
+        System.out.println(authFactory);
+    }
 }

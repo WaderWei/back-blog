@@ -42,7 +42,6 @@ public class EmailListener {
     public void sentEmail(String msg, Channel channel, Message message) {
         try {
             UserVO userVO = JsonMapperUtil.string2Obj(msg, new TypeReference<UserVO>() {});
-            System.out.println(userVO.getVerificationCode());
             pubServer.sentEmail(userVO.getEmail(),userVO.getVerificationCode());
         }catch (Exception e){ // 只要发生异常，就丢弃此消息
             log.error(e.getMessage());

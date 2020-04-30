@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import wade.wei.utils.RsaUtils;
 
 import javax.annotation.PostConstruct;
@@ -16,7 +17,7 @@ import java.security.PublicKey;
  */
 @Slf4j
 @Data
-@Configuration
+@Component
 @ConfigurationProperties(prefix = "blog.jwt")
 public class JwtProperties {
     private String secret;

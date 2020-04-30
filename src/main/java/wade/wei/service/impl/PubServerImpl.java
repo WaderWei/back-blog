@@ -8,6 +8,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import wade.wei.entity.User;
+import wade.wei.enums.CommonReturnEnum;
+import wade.wei.exception.BusinessException;
 import wade.wei.properties.JwtProperties;
 import wade.wei.properties.PubProperties;
 import wade.wei.service.PubServer;
@@ -73,9 +75,10 @@ public class PubServerImpl implements PubServer {
      */
     @Override
     public void saveCode(String key, String code) {
-        // 不是空，说明已经发送了邮件，则不再发送
-        if (StringUtils.isNotBlank(this.redisTemplate.opsForValue().get(key))) {
-            return;
+        // 30s之内不能重复发送
+        Long expire = this.redisTemplate.opsForValue().getOperations().getExpire(key);
+        if (expire != null && expire + 30 > 300 ) {
+           throw new BusinessException(CommonReturnEnum.EXIST_CODE);
         }
         this.redisTemplate.opsForValue().set(key, code, 5, TimeUnit.MINUTES);
     }
