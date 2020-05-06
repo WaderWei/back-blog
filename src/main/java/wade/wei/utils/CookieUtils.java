@@ -110,7 +110,8 @@ public final class CookieUtils {
                 if (null != request)// 设置域名的cookie
                     //todo
                 {
-                    cookie.setDomain(getDomainName(request));
+                    /*cookie.setDomain(getDomainName(request));*/
+                    /*cookie.setDomain("192.168.0.104");*/
                 }
                 cookie.setPath("/");
 
