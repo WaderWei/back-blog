@@ -22,7 +22,7 @@
         <mybatisplus.version>3.2.0</mybatisplus.version>
         <dynamic.datasource.version>2.5.6</dynamic.datasource.version>
         <p6spy.version>3.8.1</p6spy.version>
-        <mysql.version>8.0.13</mysql.version>
+        <mysql.version>8.0.16</mysql.version>
         <common.lang3.version>3.9</common.lang3.version>
         <swagger2.version>2.7.0</swagger2.version>
     </properties>
